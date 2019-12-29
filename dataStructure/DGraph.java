@@ -236,53 +236,7 @@ public class DGraph implements graph{
 	//	}
 	public static void main(String[] args) 
 	{
-		graph Dg = new DGraph();
-		Point3D p0 = new Point3D(1, 6, 0);
-		Point3D p1 = new Point3D(0, 2, 3);
-		Point3D p2 = new Point3D(1, 4, 0);
-		Point3D p3 = new Point3D(5, 2, 0);
-		NodeData node0 = new NodeData (0 ,p0, 5.8,"gh",0);
-		node_data node1 = new NodeData(1 ,p1 ,6,"gh", 0);
-		node_data node2 = new NodeData(2 ,p2 ,7,"gh", 0);
-		node_data node3 = new NodeData(3 ,p3 ,8,"gh", 0);
-		System.out.println("befor nodes"+ Dg.nodeSize());
-		Dg.addNode(node0);
-		Dg.addNode(node1);
-		Dg.addNode(node2);
-		System.out.println("after add nodes"+ Dg.nodeSize());
-
-		System.out.println("befor connect:  "+ Dg.edgeSize());
-
-		Dg.connect(node0.getKey(), node1.getKey(), 6);
-		Dg.connect(node1.getKey(), node2.getKey(), 7);
-
-		System.out.println("after 2 connect:  "+ Dg.edgeSize());
-		if (Dg.edgeSize()!=2) 
-		{ 
-			fail();
-		}
-
-		Dg.connect(node2.getKey(), node3.getKey(), 8);
-		System.out.println("after 3 connect:  "+ Dg.edgeSize());
-
-		if (Dg.edgeSize()!=3) 
-		{ 
-			fail();
-		}
-
-		System.out.println("weight edge:   "+(   Dg.getEdge(node1.getKey(), node2.getKey()).getWeight()    )   );
-		if ((Dg.getEdge(node1.getKey(), node2.getKey()).getWeight())!=7) 
-		{ 
-			fail();
-		}	
-
-		Dg.connect(node1.getKey(), node3.getKey(), 8);
-		System.out.println("after 4 connect:  "+ Dg.edgeSize());
-
-		if (Dg.edgeSize()!=4) 
-		{ 
-			fail();
-		}
+		
 
 	}
 

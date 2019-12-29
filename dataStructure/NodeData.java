@@ -51,7 +51,8 @@ public class NodeData implements node_data {
 		this.Tag=t;
 	}
 
-	public NodeData(node_data nd) {
+	public NodeData(node_data nd) 
+	{
 		this.Key=nd.getKey(); 
 		this.Location=nd.getLocation();
 		this.Weight=nd.getWeight();
