@@ -148,36 +148,41 @@ public class DGraph implements graph{
 	@Override
 	public node_data removeNode(int key) 
 	{
+		node_data tempNd=null;
 		if (HashMapNode.get(key)!=null)
 		{
-			if (HashMapEdge.get(key)!=null) 
-			{
-				HashMapEdge.remove(key);
-			}
+			//if (HashMapEdge.get(key)!=null) 
+			//{
+			tempNd=HashMapNode.get(key);
+				HashMapNode.remove(key);
+			//}
 		}
+		
 
 		Iterator<node_data> itN = this.getV().iterator(); 
 		while (itN.hasNext()) 
 		{
+			System.out.println("key  "+ key);
 			node_data nd = itN.next();
 			Iterator<edge_data> itE = this.getE(nd.getKey()).iterator(); 
 			while (itE.hasNext()) 
 			{
 				edge_data ed = itE.next();
+				System.out.println("ed.getdest() "+ed.getDest());
+				System.out.println("key "+ key);
 				if (ed.getDest()==key)
-				{	System.out.println("key "+ key);
-				System.out.println("ed.getDest() "+ed.getDest());
+				{	
 				removeEdge(ed.getSrc(), ed.getDest());
 				}
 			}
 		}
 
-		node_data tempND = new NodeData (HashMapNode.get(key));
+		//node_data tempND = new NodeData (HashMapNode.get(key));
 
 		HashMapNode.remove(key);
 		this.MC++;
 
-		return tempND;
+		return tempNd;
 	}
 
 	@Override
@@ -230,14 +235,9 @@ public class DGraph implements graph{
 		return MC;
 	}
 
-	//	public Iterator<node_data> iterator() 
-	//	{
-	//		return ((Collection<node_data>) HashMapNode).iterator();
-	//	}
 	public static void main(String[] args) 
 	{
 		
-
 	}
 
 }
