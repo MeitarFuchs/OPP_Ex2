@@ -49,6 +49,7 @@ class DGraphTest {
 	@Test
 	void ConnectTest() 
 	{
+
 		graph Dg = new DGraph();
 		Point3D p0 = new Point3D(1, 6, 0);
 		Point3D p1 = new Point3D(0, 2, 3);
@@ -58,25 +59,44 @@ class DGraphTest {
 		node_data node1 = new NodeData(1 ,p1 ,6,"gh", 0);
 		node_data node2 = new NodeData(2 ,p2 ,7,"gh", 0);
 		node_data node3 = new NodeData(3 ,p3 ,8,"gh", 0);
-		
+		System.out.println("befor nodes"+ Dg.nodeSize());
 		Dg.addNode(node0);
 		Dg.addNode(node1);
 		Dg.addNode(node2);
+		System.out.println("after add nodes"+ Dg.nodeSize());
+		
+		System.out.println("befor connect:  "+ Dg.edgeSize());
 		
 		Dg.connect(node0.getKey(), node1.getKey(), 6);
 		Dg.connect(node1.getKey(), node2.getKey(), 7);
-		Dg.connect(node1.getKey(), node3.getKey(), 8);
-
+		
+		System.out.println("after 2 connect:  "+ Dg.edgeSize());
+		if (Dg.edgeSize()!=2) 
+		{ 
+			fail();
+		}
+		
+		Dg.connect(node2.getKey(), node3.getKey(), 8);
+		System.out.println("after 3 connect:  "+ Dg.edgeSize());
+		
+		if (Dg.edgeSize()!=3) 
+		{ 
+			fail();
+		}
+		
 		if ((Dg.getEdge(node1.getKey(), node2.getKey()).getWeight())!=7) 
 		{ 
 			fail();
 		}	
-		if (( Dg.getEdge( node1.getKey(), node2.getKey() ).getWeight())!=8) 
+		if (( Dg.getEdge( node2.getKey(), node3.getKey() ).getWeight())!=8) 
 		{ 
 			fail();
 		}	
 		
-		if (Dg.edgeSize()!=3) 
+		Dg.connect(node1.getKey(), node3.getKey(), 8);
+		System.out.println("after 4 connect:  "+ Dg.edgeSize());
+		
+		if (Dg.edgeSize()!=4) 
 		{ 
 			fail();
 		}

@@ -38,7 +38,23 @@ public class DGraph implements graph{
 	@Override
 	public edge_data getEdge(int src, int dest)
 	{
-		return (HashMapEdge.get(src)).get(dest);	
+		Iterator<node_data> itN = this.getV().iterator(); 
+		while (itN.hasNext()) 
+		{
+			node_data nd = itN.next();
+			if (nd.getKey()==src)
+			{
+				Iterator<edge_data> itE = this.getE(nd.getKey()).iterator(); 
+				while (itE.hasNext()) 
+				{
+					edge_data ed = itE.next();
+					if (ed.getDest()==dest)
+						return ed;
+				}
+			}
+		}
+		edge_data ed =null;
+		return ed;	
 	}
 
 	@Override
@@ -53,47 +69,80 @@ public class DGraph implements graph{
 	public void connect(int src, int dest, double w) 
 	{
 		boolean flag=false;
-		if (HashMapNode.get(src)==HashMapNode.get(dest)) {
+		edge_data originalEd= new EdgeData(src,dest,w);
+		if (HashMapNode.get(src)==HashMapNode.get(dest)) 
+		{
 			System.out.println("the src and dest is the same");
 		}
-		if (HashMapEdge.get(src)==null) {
-			node_data s= new NodeData(src);
-			addNode(s);
-		}
-		if (HashMapEdge.get(dest)==null) {
-			node_data d= new NodeData(dest);
-			addNode(d);
-		}
-		Iterator<edge_data> it = this.getE(src).iterator(); 
-		while (it.hasNext()&&flag==false) 
-		{
-			edge_data ed = it.next();
-			if (ed.getDest()==dest) {
-				flag = true;
-			}
 
+		//			if (HashMapNode.get(src)==null &&(HashMapNode.get(dest)==null)) 
+		//			{
+		//				node_data s= new NodeData(src);
+		//				addNode(s);
+		//			}
+
+		if (HashMapEdge.get(src)==null)
+		{
+			HashMapEdge.put(src,new HashMap<Integer, edge_data>());
 		}
-		if (!flag) {
-			edge_data ed=new EdgeData(src,dest,w);
-			HashMapEdge.get(src).put(dest, ed);
-			this.MC++;
+		if (HashMapEdge.get(src)!=null)
+		{
+				Iterator<edge_data> itE = this.getE(src).iterator(); 
+				while (itE.hasNext() && !flag) 
+				{
+					edge_data ed = itE.next();
+					if (ed.getDest()==dest)
+						flag = true;	
+				}
 		}
+
+		if (!flag)
+		HashMapEdge.get(src).put(dest,originalEd);
+		//		boolean flag=false;
+		//		if (HashMapNode.get(src)==HashMapNode.get(dest)) 
+		//		{
+		//			System.out.println("the src and dest is the same");
+		//		}
+		//		
+		//		if (HashMapNode.get(src)==null) {
+		//			node_data s= new NodeData(src);
+		//			addNode(s);
+		//		}
+		//		if (HashMapNode.get(dest)==null) {
+		//			node_data d= new NodeData(dest);
+		//			addNode(d);
+		//		}
+		//		
+		//		Iterator<edge_data> it = this.getE(src).iterator(); 
+		//		while (it.hasNext()&&flag==false) 
+		//		{
+		//			edge_data ed = it.next();
+		//			if (ed.getDest()==dest) {
+		//				flag = true;
+		//			}
+		//
+		//		}
+		//		if (!flag) {
+		//			edge_data ed=new EdgeData(src,dest,w);
+		//			HashMapEdge.get(src).put(dest, ed);
+		//			this.MC++;
+		//		}
 	}
 
 
 	@Override
 	public Collection<node_data> getV() {
-		Collection<node_data> co= (Collection<node_data>) HashMapNode;	
-		return co;
-		//return HashMapNode.values();
-	
+		//		Collection<node_data> co= (Collection<node_data>) HashMapNode;	
+		//		return co;
+		return HashMapNode.values();
+
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		Collection<edge_data> co= (Collection<edge_data>) HashMapEdge.get(node_id);
-		return co;
-		//return HashMapEdge.get(node_id).values();
+		//		Collection<edge_data> co= (Collection<edge_data>) HashMapEdge.get(node_id);
+		//		return co;
+		return HashMapEdge.get(node_id).values();
 	}
 
 	@Override
@@ -156,9 +205,23 @@ public class DGraph implements graph{
 	}
 
 	@Override
-	public int edgeSize() {
-		int Size = HashMapEdge.size(); 
-		return Size;
+	public int edgeSize() 
+	{
+		int size =0; 
+		Iterator<node_data> itN = this.getV().iterator(); 
+		while (itN.hasNext()) 
+		{
+			node_data nd = itN.next();
+			Iterator<edge_data> itE = this.getE(nd.getKey()).iterator(); 
+			while (itE.hasNext()) 
+			{
+				edge_data ed = itE.next();
+				size++;
+			}
+		}
+
+		return size; 
+
 	}
 
 
@@ -167,42 +230,60 @@ public class DGraph implements graph{
 		return MC;
 	}
 
-//	public Iterator<node_data> iterator() 
-//	{
-//		return ((Collection<node_data>) HashMapNode).iterator();
-//	}
+	//	public Iterator<node_data> iterator() 
+	//	{
+	//		return ((Collection<node_data>) HashMapNode).iterator();
+	//	}
 	public static void main(String[] args) 
 	{
 		graph Dg = new DGraph();
-
 		Point3D p0 = new Point3D(1, 6, 0);
 		Point3D p1 = new Point3D(0, 2, 3);
 		Point3D p2 = new Point3D(1, 4, 0);
 		Point3D p3 = new Point3D(5, 2, 0);
-
-		node_data node0 = new NodeData (0 ,p0 ,5,"gh", 0);
+		NodeData node0 = new NodeData (0 ,p0, 5.8,"gh",0);
 		node_data node1 = new NodeData(1 ,p1 ,6,"gh", 0);
 		node_data node2 = new NodeData(2 ,p2 ,7,"gh", 0);
 		node_data node3 = new NodeData(3 ,p3 ,8,"gh", 0);
-
+		System.out.println("befor nodes"+ Dg.nodeSize());
 		Dg.addNode(node0);
 		Dg.addNode(node1);
 		Dg.addNode(node2);
-		Dg.addNode(node3);
+		System.out.println("after add nodes"+ Dg.nodeSize());
 
-		Dg.connect(node0.getKey(), node1.getKey(), 9);
-		Dg.connect(node1.getKey(), node2.getKey(), 10);
-		Dg.connect(node1.getKey(), node3.getKey(), 11);
-		Dg.removeNode(node0.getKey());
-		System.out.println("Dg.edgeSize()"+Dg.edgeSize());
-		if (Dg.nodeSize()!=3) 
-		{ 
-			fail(); 
-		}
+		System.out.println("befor connect:  "+ Dg.edgeSize());
+
+		Dg.connect(node0.getKey(), node1.getKey(), 6);
+		Dg.connect(node1.getKey(), node2.getKey(), 7);
+
+		System.out.println("after 2 connect:  "+ Dg.edgeSize());
 		if (Dg.edgeSize()!=2) 
 		{ 
-			fail(); 
+			fail();
 		}
+
+		Dg.connect(node2.getKey(), node3.getKey(), 8);
+		System.out.println("after 3 connect:  "+ Dg.edgeSize());
+
+		if (Dg.edgeSize()!=3) 
+		{ 
+			fail();
+		}
+
+		System.out.println("weight edge:   "+(   Dg.getEdge(node1.getKey(), node2.getKey()).getWeight()    )   );
+		if ((Dg.getEdge(node1.getKey(), node2.getKey()).getWeight())!=7) 
+		{ 
+			fail();
+		}	
+
+		Dg.connect(node1.getKey(), node3.getKey(), 8);
+		System.out.println("after 4 connect:  "+ Dg.edgeSize());
+
+		if (Dg.edgeSize()!=4) 
+		{ 
+			fail();
+		}
+
 	}
 
 }
