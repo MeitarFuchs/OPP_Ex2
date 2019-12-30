@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,11 +27,11 @@ import dataStructure.edge_data;
 import dataStructure.graph;
 import dataStructure.node_data;
 
+
 public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 {
-	private static graph Dg= new DGraph();
+	private graph Dg= new DGraph();
 
-	/// copy constractor??
 	public GUI_JFRAME(graph Dgraph)
 	{
 		this.Dg= new DGraph((DGraph) Dgraph);
@@ -87,10 +90,6 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		}
 		return nd;
 	}
-	public void repaint(Graphics dg)
-	{
-		paint(dg);
-	}
 	
 	public void paint(Graphics dg)
 	{
@@ -140,7 +139,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		{
 			String str = e.getActionCommand();
 
-			if(str.equals("Item 1"))
+			if(str.equals("save to file"))
 			{
 				Point3D p1 = new Point3D(100,100);
 				Point3D p2 = new Point3D(50,300);
@@ -154,7 +153,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			}
 
 		}
-		
+	
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			System.out.println("mouseClicked");
@@ -237,8 +236,8 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			
 			Dgraph.removeNode(n6.getKey());
 			GuiG.repaint();
-//			Dgraph.removeEdge(n5.getKey(), n3.getKey());
-//			GuiG.repaint();
+			Dgraph.removeEdge(n5.getKey(), n3.getKey());
+			GuiG.repaint();
 
 			//			graph g = new DGraph();
 			//			Point3D p=new Point3D(1,4,0);
