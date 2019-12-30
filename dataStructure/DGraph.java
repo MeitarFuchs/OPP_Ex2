@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class DGraph implements graph{
-	private HashMap  <Integer, node_data> HashMapNode  = new HashMap<Integer, node_data>();
-	private HashMap  <Integer, HashMap<Integer, edge_data>> HashMapEdge  = new HashMap<Integer, HashMap<Integer, edge_data>>();
+	public HashMap  <Integer, node_data> HashMapNode  = new HashMap<Integer, node_data>();
+	public HashMap  <Integer, HashMap<Integer, edge_data>> HashMapEdge  = new HashMap<Integer, HashMap<Integer, edge_data>>();
 	public  int MC;
 
 	public DGraph() 
@@ -228,7 +228,6 @@ public class DGraph implements graph{
 		return size; 
 
 	}
-
 
 	@Override
 	public int getMC() {	
