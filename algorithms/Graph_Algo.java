@@ -249,7 +249,7 @@ public class Graph_Algo implements graph_algorithms
 						this.myGraph.getNode(ed.getDest()).setInfo(""+nd.getKey());
 					else
 						this.myGraph.getNode(ed.getDest()).setInfo(nd.getInfo()+","+  Integer.toString(nd.getKey()));
-					
+
 					System.out.println(this.myGraph.getNode(ed.getDest()).getInfo() );
 					System.out.println(nd.getInfo());
 					qn.add( this.myGraph.getNode(ed.getDest()));
@@ -262,20 +262,16 @@ public class Graph_Algo implements graph_algorithms
 			}
 			if (!qn.isEmpty())
 			{	qn.remove();
-				nd=qn.peek();
+			nd=qn.peek();
 			}
 		}
 
-		String infoDest =this.myGraph.HashMapNode.get(dest).getInfo();
+		String infoDest =this.myGraph.HashMapNode.get(dest).getInfo()+","+destN.getKey();
 		System.out.println("infoDest:  "+infoDest);
 		int len=infoDest.length()/2; 
 		String[] arr=new String [len];
-		
+
 		arr=infoDest.split(",");
-		for (int i=0; i<arr.length; i++)
-		{
-			System.out.println("jjj"+arr[i]);
-		}
 		for (int i=0; i<arr.length; i++)
 		{
 			//System.out.println("arr[i]"+ arr[2]);
@@ -288,34 +284,41 @@ public class Graph_Algo implements graph_algorithms
 	@Override
 	public List<node_data> TSP(List<Integer> targets) 
 	{
-		List <node_data> ans = new LinkedList<node_data>();
+		List <node_data> listAns = new LinkedList<node_data>();
 		if (!isConnected()) 
 		{
 			return null;
 		}
 		if (targets.size()==1)
 		{
-			ans.add(this.myGraph.HashMapNode.get(targets.get(0)));
-			System.out.println(ans.get(0).getKey());
-			return ans;
+			listAns.add(this.myGraph.HashMapNode.get(targets.get(0)));
+
+			return listAns;
 		}
 		else {
-			for (int i = 0; i <targets.size()-1 ; i++) {
-				ans.addAll(shortestPath(targets.get(i),targets.get(i+1)));
-				if (i!=0){
-					ans.remove(i);
+
+			int numList=0;
+			while(numList<targets.size()-1)
+			{
+				listAns.addAll(shortestPath(targets.get(numList),targets.get(numList+1)));
+				if (numList!=0) 
+				{
+					listAns.remove(numList);
 				}
+				numList++;
 			}
-			for (int i = 0; i <ans.size()-1 ; i++) {
-				if (ans.get(i).getKey()==ans.get(i+1).getKey()){
-					ans.remove(i);
+			numList=0;
+			while(numList<targets.size()-1)// remove douplicat
+			{
+				if (listAns.get(numList).getKey() == listAns.get(numList+1).getKey() )
+				{
+					listAns.remove(numList);
 				}
-			}
+				numList++;
+			}	
 		}
-		for (int i = 0; i <ans.size() ; i++) {
-			System.out.println(ans.get(i).getKey());
-		}
-		return ans;
+		
+		return listAns;
 	}
 	//	{
 	//		List <node_data> listN = new LinkedList<node_data>();
@@ -438,20 +441,20 @@ public class Graph_Algo implements graph_algorithms
 
 	public static void main(String[] args) 
 	{
-//		graph Dg = new DGraph();
-//		Graph_Algo Ag = new Graph_Algo();
-//
-//		Point3D p0 = new Point3D(1, 6, 0);
-//		Point3D p1 = new Point3D(0, 2, 3);
-//		Point3D p2 = new Point3D(1, 4, 0);
-//		Point3D p3 = new Point3D(5, 2, 0);
-//		Point3D p4 = new Point3D(6,5, 0);
-//
-//		node_data node0 = new NodeData (0 ,p0 ,5,"gh", 0);
-//		node_data node1 = new NodeData(1 ,p1 ,6,"gh", 0);
-//		node_data node2 = new NodeData(2 ,p2 ,7,"gh", 0);
-//		node_data node3 = new NodeData(3 ,p3 ,8,"gh", 0);
-//		node_data node4 = new NodeData(4 ,p4 ,8,"gh", 0);
+		//		graph Dg = new DGraph();
+		//		Graph_Algo Ag = new Graph_Algo();
+		//
+		//		Point3D p0 = new Point3D(1, 6, 0);
+		//		Point3D p1 = new Point3D(0, 2, 3);
+		//		Point3D p2 = new Point3D(1, 4, 0);
+		//		Point3D p3 = new Point3D(5, 2, 0);
+		//		Point3D p4 = new Point3D(6,5, 0);
+		//
+		//		node_data node0 = new NodeData (0 ,p0 ,5,"gh", 0);
+		//		node_data node1 = new NodeData(1 ,p1 ,6,"gh", 0);
+		//		node_data node2 = new NodeData(2 ,p2 ,7,"gh", 0);
+		//		node_data node3 = new NodeData(3 ,p3 ,8,"gh", 0);
+		//		node_data node4 = new NodeData(4 ,p4 ,8,"gh", 0);
 		//
 		//		//Dg.addNode(node0);
 		//		Dg.addNode(node1);
@@ -503,15 +506,15 @@ public class Graph_Algo implements graph_algorithms
 		Dg2.addNode(node55);
 		Dg2.addNode(node66);
 
-//		Dg2.connect(node00.getKey(), node33.getKey(), 4);
-//		Dg2.connect(node00.getKey(), node22.getKey(), 6);
-//		Dg2.connect(node00.getKey(), node11.getKey(), 3);
-//		Dg2.connect(node11.getKey(), node22.getKey(), 2);
-//		Dg2.connect(node33.getKey(), node22.getKey(), 1);
-//		Dg2.connect(node33.getKey(), node44.getKey(), 3);
-//		Dg2.connect(node22.getKey(), node44.getKey(), 2);
-//		Dg2.connect(node44.getKey(), node66.getKey(), 7);
-//		Dg2.connect(node44.getKey(), node55.getKey(), 5);
+		//		Dg2.connect(node00.getKey(), node33.getKey(), 4);
+		//		Dg2.connect(node00.getKey(), node22.getKey(), 6);
+		//		Dg2.connect(node00.getKey(), node11.getKey(), 3);
+		//		Dg2.connect(node11.getKey(), node22.getKey(), 2);
+		//		Dg2.connect(node33.getKey(), node22.getKey(), 1);
+		//		Dg2.connect(node33.getKey(), node44.getKey(), 3);
+		//		Dg2.connect(node22.getKey(), node44.getKey(), 2);
+		//		Dg2.connect(node44.getKey(), node66.getKey(), 7);
+		//		Dg2.connect(node44.getKey(), node55.getKey(), 5);
 		Dg2.connect(node00.getKey(), node11.getKey(), 5);
 		Dg2.connect(node11.getKey(), node22.getKey(), 5);
 		Dg2.connect(node22.getKey(), node33.getKey(), 5);
@@ -521,7 +524,7 @@ public class Graph_Algo implements graph_algorithms
 		Dg2.connect(node66.getKey(), node00.getKey(), 5);
 
 		Ag2.init(Dg2);
-	//	System.out.println("kkkkk"+Ag2.shortestPathDist(0, 4));
+		//	System.out.println("kkkkk"+Ag2.shortestPathDist(0, 4));
 		double x = Ag2.shortestPathDist(0, 4);
 		List<node_data> lNd=Ag2.shortestPath(0, 4);
 		Iterator<node_data> itList = lNd.iterator(); 
@@ -531,70 +534,88 @@ public class Graph_Algo implements graph_algorithms
 		}
 		System.out.println();
 		System.out.println("x "+ x);
-//
-//		System.out.println("shortest path:  "+ x);
-//		LinkedList<Integer> l = new LinkedList<Integer>();
-//		l.add(1);
-//		l.add(3);
-//		l.add(5);
-//		List<node_data> ll=  Ag2.TSP(l);
-//		System.out.println(ll);
-//		Iterator<node_data> itLi = ll.iterator(); 
-//		while (itLi.hasNext()) 
-//		{
-//			node_data c = (node_data)itLi.next();
-//			System.out.print(c.getKey()+" ");
-//		}
-//		System.out.println();
+		LinkedList<Integer> l = new LinkedList<Integer>();
+		l.add(1);
+		l.add(3);
+		List<node_data> ans = new LinkedList<node_data>();
+		ans=Ag2.TSP(l);
+		
+		for (int i = 0; i <ans.size() ; i++) 
+		{System.out.println("ans");
+			if (i==0)
+				System.out.print (ans.get(i).getKey());
+			else
+				System.out.print (" , "+ans.get(i).getKey());
+		}
+		System.out.println();
+		if (null==Ag2.TSP(l))
+			System.out.println("not good");
+		else
+			System.out.println(" good");
+		//
+		//		System.out.println("shortest path:  "+ x);
+		//		LinkedList<Integer> l = new LinkedList<Integer>();
+		//		l.add(1);
+		//		l.add(3);
+		//		l.add(5);
+		//		List<node_data> ll=  Ag2.TSP(l);
+		//		System.out.println(ll);
+		//		Iterator<node_data> itLi = ll.iterator(); 
+		//		while (itLi.hasNext()) 
+		//		{
+		//			node_data c = (node_data)itLi.next();
+		//			System.out.print(c.getKey()+" ");
+		//		}
+		//		System.out.println();
 
 
 
 		///TSP test
-//		graph Dg = new DGraph();
-//		Graph_Algo Ag3 = new Graph_Algo();
-//
-//		Point3D p0 = new Point3D(1, 6, 0);
-//		Point3D p1 = new Point3D(0, 2, 3);
-//		Point3D p2 = new Point3D(1, 4, 0);
-//		Point3D p3 = new Point3D(5, 2, 0);
-//	//	Point3D p4 = new Point3D(6,5, 0);
-//
-//		node_data node0 = new NodeData (0 ,p0 ,5);
-//		node_data node1 = new NodeData(1 ,p1 ,6);
-//		node_data node2 = new NodeData(2 ,p2 ,7);
-//		node_data node3 = new NodeData(3 ,p3 ,8);
-//	//	node_data node4 = new NodeData(4 ,p4 ,8);
-//
-//		Dg.connect(node0.getKey(), node1.getKey(), 9);
-//		Dg.connect(node1.getKey(), node2.getKey(),3);
-//		Dg.connect(node2.getKey(), node3.getKey(), 5);
-//		Dg.connect(node3.getKey(), node0.getKey(), 4);
-//		Dg.connect(node0.getKey(), node1.getKey(), 9);
-//		Dg.connect(node1.getKey(), node0.getKey(), 9);
-//		Dg.connect(node1.getKey(), node4.getKey(), 10);
-//		Dg.connect(node4.getKey(), node3.getKey(), 11);
-//		Dg.connect(node3.getKey(), node2.getKey(), 11);
-//		Dg.connect(node2.getKey(), node1.getKey(), 11);
-		
-		//Ag3.init(Dg);
-		
-	//	LinkedList<Integer> l = new LinkedList<Integer>();
-//		l.add(1);
-//		l.add(3);
-//		l.add(7);
-//		if (null==Ag3.TSP(l))
-//			System.out.println("not good");
-//		else
-//			System.out.println(" good");
+		//		graph Dg = new DGraph();
+		//		Graph_Algo Ag3 = new Graph_Algo();
+		//
+		//		Point3D p0 = new Point3D(1, 6, 0);
+		//		Point3D p1 = new Point3D(0, 2, 3);
+		//		Point3D p2 = new Point3D(1, 4, 0);
+		//		Point3D p3 = new Point3D(5, 2, 0);
+		//	//	Point3D p4 = new Point3D(6,5, 0);
+		//
+		//		node_data node0 = new NodeData (0 ,p0 ,5);
+		//		node_data node1 = new NodeData(1 ,p1 ,6);
+		//		node_data node2 = new NodeData(2 ,p2 ,7);
+		//		node_data node3 = new NodeData(3 ,p3 ,8);
+		//	//	node_data node4 = new NodeData(4 ,p4 ,8);
+		//
+		//		Dg.connect(node0.getKey(), node1.getKey(), 9);
+		//		Dg.connect(node1.getKey(), node2.getKey(),3);
+		//		Dg.connect(node2.getKey(), node3.getKey(), 5);
+		//		Dg.connect(node3.getKey(), node0.getKey(), 4);
+		//		Dg.connect(node0.getKey(), node1.getKey(), 9);
+		//		Dg.connect(node1.getKey(), node0.getKey(), 9);
+		//		Dg.connect(node1.getKey(), node4.getKey(), 10);
+		//		Dg.connect(node4.getKey(), node3.getKey(), 11);
+		//		Dg.connect(node3.getKey(), node2.getKey(), 11);
+		//		Dg.connect(node2.getKey(), node1.getKey(), 11);
 
-//		l = new LinkedList<>();
-//		l.add(5);
-//		l.add(3);
-//		l.add(0);
-//		if (null== Ag3.TSP(l))
-//			System.out.println("not good");
-//		else
-//			System.out.println(" good");
+		//Ag3.init(Dg);
+
+		//	LinkedList<Integer> l = new LinkedList<Integer>();
+		//		l.add(1);
+		//		l.add(3);
+		//		l.add(7);
+		//		if (null==Ag3.TSP(l))
+		//			System.out.println("not good");
+		//		else
+		//			System.out.println(" good");
+
+		//		l = new LinkedList<>();
+		//		l.add(5);
+		//		l.add(3);
+		//		l.add(0);
+		//		if (null== Ag3.TSP(l))
+		//			System.out.println("not good");
+		//		else
+		//			System.out.println(" good");
 
 
 		//		List<Integer> l=new LinkedList<Integer>();
@@ -610,8 +631,8 @@ public class Graph_Algo implements graph_algorithms
 		//		{
 		//			System.out.print(" "+lNd2.get(i).getKey());
 		//		}
-//		System.out.println();
-//		System.out.println("end Tsp");
+		//		System.out.println();
+		//		System.out.println("end Tsp");
 		//				Iterator<node_data> itList2 = lNd2.iterator(); 
 		//				while (itList2.hasNext())
 		//				{
