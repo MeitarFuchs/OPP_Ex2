@@ -210,7 +210,8 @@ class AlgoGraphTest
       Point3D x6 = new Point3D(8,3,0);
       Point3D x7 = new Point3D(4,1,0);
       Point3D x8 = new Point3D(75,14,0);
-      node_data a1 = new NodeData(1,x,0);
+      
+      NodeData a1 = new NodeData(1,x,0);
       NodeData a2 = new NodeData(2,x2,0);
       NodeData a3 = new NodeData(3,x3,0);
       NodeData a4 = new NodeData(4,x4,0);
@@ -245,6 +246,19 @@ class AlgoGraphTest
       test.add(a5);
       test.add(a6);
       test.add(a7);
+      Iterator<NodeData> itList = test.iterator(); 
+      System.out.println("welomeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+		while (itList.hasNext())
+		{
+			node_data c = (node_data)itList.next();
+			System.out.print(c.getKey()+" ");
+			if (itList.hasNext()==false)
+				if (7!=c.getWeight())
+				{ 
+					fail(); 
+				}
+		}
+		
       assertEquals(test.get(0).getKey(),ans.get(0).getKey());
       assertEquals(test.get(1).getKey(),ans.get(1).getKey());
       assertEquals(test.get(2).getKey(),ans.get(2).getKey());

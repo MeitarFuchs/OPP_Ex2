@@ -75,7 +75,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		this.addMouseListener(this);
 	}
 	
-	public node_data getNodeDest(int keyDest) 
+	public node_data getNodeDest(int keyDest) ///maybe to delete the function
 	{
 		boolean flag=false;
 		node_data nd=null;
@@ -117,7 +117,8 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 							//draw the edges
 							dg.setColor(Color.PINK);
 							Point3D pSrc=new Point3D((int)nd.getLocation().x(), (int)nd.getLocation().y());
-							node_data destNode = getNodeDest(ed.getDest());
+							node_data destNode = Dg.getNode(ed.getDest());
+					//		node_data destNode = getNodeDest(ed.getDest());
 							Point3D pDest= new Point3D((int)destNode.getLocation().x(), (int)destNode.getLocation().y());
 							(dg).drawLine(pSrc.ix(), pSrc.iy(),pDest.ix(), pDest.iy());
 							//write the w edge
