@@ -197,7 +197,6 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		
 		public static void main(String[] args) 
 		{
-			//GUI_JFRAME GuiG = new GUI_JFRAME(Dg);
 			graph Dgraph = new DGraph();
 			
 			Point3D p1 = new Point3D(200, 200, 0);
@@ -206,6 +205,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			Point3D p4 = new Point3D(390, 178, 0);
 			Point3D p5 = new Point3D(350, 279, 0);
 			Point3D p6 = new Point3D(278, 590, 0);
+			Point3D p7 = new Point3D(240, 690, 0);
 
 			node_data n1 = new NodeData(1, p1, 9);
 			node_data n2 = new NodeData(2, p2, 10);
@@ -213,6 +213,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			node_data n4 = new NodeData(4, p4, 12);
 			node_data n5 = new NodeData(5, p5, 13);
 			node_data n6 = new NodeData(6, p6, 14);
+			node_data n7 = new NodeData(7, p7, 15);
 			
 			Dgraph.addNode(n1);
 			Dgraph.addNode(n2);
@@ -237,6 +238,10 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			Dgraph.removeNode(n6.getKey());
 			GuiG.repaint();
 			Dgraph.removeEdge(n5.getKey(), n3.getKey());
+			GuiG.repaint();
+			Dgraph.addNode(n7);
+			GuiG.repaint();
+			Dgraph.connect(n7.getKey(),n2.getKey(),20);
 			GuiG.repaint();
 
 			//			graph g = new DGraph();
