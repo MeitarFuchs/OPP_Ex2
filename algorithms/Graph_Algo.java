@@ -425,17 +425,17 @@ public class Graph_Algo implements graph_algorithms
 	public graph copy() { 
 		graph newGraph = new DGraph();
 		Iterator<node_data> itNode = this.myGraph.getV().iterator(); 
-		while (itNode.hasNext()) {
+		while (itNode.hasNext()) 
+		{
 			node_data nd = (node_data)itNode.next();
 			newGraph.addNode(nd);
 			Iterator<edge_data> itEdge = this.myGraph.getE(nd.getKey()).iterator(); 
-			while (itEdge.hasNext()) {
+			while (itEdge.hasNext()) 
+			{
 				edge_data ed = (edge_data) itEdge.next();
 				newGraph.connect(nd.getKey(), ed.getDest(), ed.getWeight());
 			}
-
 		}
-
 		return  newGraph;
 	}
 
@@ -490,7 +490,7 @@ public class Graph_Algo implements graph_algorithms
 		Point3D p55 = new Point3D(4,6, 0);
 		Point3D p66 = new Point3D(3,5, 0);
 
-		node_data node00 = new NodeData (0 ,p00 ,5);
+		node_data node00 = new NodeData(0 ,p00 ,5);
 		node_data node11 = new NodeData(1 ,p11 ,6);
 		node_data node22 = new NodeData(2 ,p22,7);
 		node_data node33 = new NodeData(3 ,p33,8);
@@ -524,6 +524,11 @@ public class Graph_Algo implements graph_algorithms
 		Dg2.connect(node66.getKey(), node00.getKey(), 5);
 
 		Ag2.init(Dg2);
+		
+		System.out.println("Ag2:  "+Ag2.myGraph.HashMapNode.get(node66.getKey()).getKey());
+		graph g= new DGraph();
+		g=Ag2.copy();		
+		System.out.println("g copy:  "+g.getNode(node66.getKey()).getKey());
 		//	System.out.println("kkkkk"+Ag2.shortestPathDist(0, 4));
 		double x = Ag2.shortestPathDist(0, 4);
 		List<node_data> lNd=Ag2.shortestPath(0, 4);
