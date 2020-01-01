@@ -70,7 +70,7 @@ public class DGraph implements graph{
 	{
 		boolean flag=false;
 		edge_data originalEd= new EdgeData(src,dest,w);
-		if (this.HashMapNode.get(src)==this.HashMapNode.get(dest)) 
+		if (src==dest) 
 		{
 			System.out.println("the src and dest is the same");
 		}
