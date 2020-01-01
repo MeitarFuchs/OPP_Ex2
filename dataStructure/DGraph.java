@@ -139,10 +139,18 @@ public class DGraph implements graph{
 	}
 
 	@Override
-	public Collection<edge_data> getE(int node_id) {
+	public Collection<edge_data> getE(int node_id)
+{
 		//		Collection<edge_data> co= (Collection<edge_data>) HashMapEdge.get(node_id);
 		//		return co;
-		return HashMapEdge.get(node_id).values();
+		if (this.HashMapEdge.get(node_id) == null)
+		{
+			return null;
+		} 
+		else {
+			return HashMapEdge.get(node_id).values();
+		}
+		
 	}
 
 	@Override

@@ -23,6 +23,8 @@ import utils.Point3D;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,9 +41,9 @@ import java.lang.reflect.Array;
 public class Graph_Algo implements graph_algorithms
 {
 	private DGraph myGraph = new DGraph();
-	 public graph getMyGraph(){
-	        return this.myGraph;
-	    }
+	public graph getMyGraph(){
+		return this.myGraph;
+	}
 	@Override
 	public void init(graph g) //???
 	{
@@ -139,7 +141,7 @@ public class Graph_Algo implements graph_algorithms
 						this.myGraph.getNode(ed2.getDest()).setTag(1);	
 						sn.push((NodeData) this.myGraph.getNode(ed2.getDest()));
 					}
-					
+
 				}
 			}
 		}
@@ -149,9 +151,9 @@ public class Graph_Algo implements graph_algorithms
 			Iterator <node_data> itr = ( this.myGraph.getV()).iterator(); 
 			if (it.hasNext()) 
 			{
-				System.out.println("hdbcbjvfbuscgdxkjbhvjsgaNAHSGDCJ");
+				//System.out.println("hdbcbjvfbuscgdxkjbhvjsgaNAHSGDCJ");
 				node_data nd =  itr.next();
-				System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
+				//System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
 			}
 
 			return true;
@@ -166,7 +168,7 @@ public class Graph_Algo implements graph_algorithms
 		while (it.hasNext()) 
 		{
 			node_data nd =  it.next();
-			System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
+			//	System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
 			if (nd.getTag()!=1)
 			{
 
@@ -234,93 +236,229 @@ public class Graph_Algo implements graph_algorithms
 	public double shortestPathDist(int src, int dest) 
 	{
 		List<node_data> lNd=new LinkedList<node_data>() ;
-		lNd= shortestPath(src, dest);
+		lNd=shortestPath(src, dest);
+		if (lNd.isEmpty())
+			return -1;
 		double dis=this.myGraph.getNode(dest).getWeight();
+		System.out.println("////////////////////////////////////////////////////// The dis fron shortPathDis:   "+dis);
 		return dis;
-	//	 return shortestPathDistList(shortestPath(src, dest),  src,  dest) ;
 	}
-	
-//	public double shortestPathDistList(List<node_data> l, int src, int dest) 
-//	{
-//		
-//		double dis=l.get(l.size()-1).getWeight();
-//		return dis;
-//	}
-
 	@Override
 	public List<node_data> shortestPath(int src, int dest) 
 	{
 		infinityNodeW();
-		Queue<node_data> qn = new LinkedList<node_data>();
-
-		List<node_data> lNd=new LinkedList<node_data>();
+		initColor(0);
+		int count=0;
+		Queue<node_data> queueNode = new LinkedList<node_data>();
+		List<node_data> shortestPathList=new LinkedList<node_data>();
 		node_data srcN = this.myGraph.HashMapNode.get(src);
 		node_data destN = this.myGraph.HashMapNode.get(dest);
+		if (this.myGraph.getNode(src)==null || this.myGraph.getNode(dest)==null)
+			return null;
+		
+		Iterator<edge_data> itEdgeS = this.myGraph.getE(srcN.getKey()).iterator();
+		Iterator<edge_data> itEdgeD = this.myGraph.getE(destN.getKey()).iterator();
+		if( itEdgeS==null || itEdgeD==null )
+			return null;
+		
+		System.out.println("the src "+srcN);
 		srcN.setWeight(0);
+		System.out.println("the src weight "+ srcN.getWeight());
 		srcN.setInfo("");
-		qn.add(srcN);
-		node_data nd=this.myGraph.getNode(src);
+		queueNode.add(srcN);
+		System.out.println("size queue:   "+queueNode.size());
+		System.out.println("srcKey:  "+srcN.getKey());
+		node_data currNode=srcN;
+		System.out.println("currntNode srcKey:  "+currNode.getKey());
+		double min=Double.MAX_VALUE;
 
-		while (!qn.isEmpty()) 
+		//while(!checkAllTag1())
+		while(count<1000)	
 		{
-			Iterator<edge_data> itEdge = this.myGraph.getE(nd.getKey()).iterator(); 
-			while (itEdge.hasNext()) 
-			{
-				edge_data ed = (edge_data) itEdge.next();
-
-				if (nd.getWeight()+ed.getWeight() < this.myGraph.getNode(ed.getDest()).getWeight() )
-				{
-					this.myGraph.getNode(ed.getDest()).setWeight(nd.getWeight()+ed.getWeight());
-					if (nd.getKey()==src)
-						this.myGraph.getNode(ed.getDest()).setInfo(""+nd.getKey());
-					else
-						this.myGraph.getNode(ed.getDest()).setInfo(nd.getInfo()+","+  Integer.toString(nd.getKey()));
-
-					System.out.println(this.myGraph.getNode(ed.getDest()).getInfo() );
-					System.out.println(nd.getInfo());
-					qn.add( this.myGraph.getNode(ed.getDest()));
-				}
-			}	
-
-			while ( !qn.isEmpty() && (qn.peek().getKey() == dest ))
-			{
-				qn.remove();
-				if (!qn.isEmpty())
-				{	
-				nd=qn.peek();
-				}
-				
-			}
+			System.out.print("I am node:  "+currNode.getKey()+"     ");
+			Iterator<edge_data> itEdge = this.myGraph.getE(currNode.getKey()).iterator();
 			
-			if (!qn.isEmpty())
-			{	qn.remove();
-			if (!qn.isEmpty())
+
+			if (itEdge.hasNext())
 			{	
-			nd=qn.peek();
+				while (itEdge.hasNext()) 
+				{
+					edge_data currEdge = (edge_data) itEdge.next();
+					System.out.print("i am in dest:  "+this.myGraph.getNode(currEdge.getDest()).getKey());
+					if (currNode.getWeight()+currEdge.getWeight() < this.myGraph.getNode(currEdge.getDest()).getWeight() )
+					{
+						this.myGraph.getNode(currEdge.getDest()).setWeight(currNode.getWeight()+currEdge.getWeight());//update w
+						System.out.println("the weight of the ed dest "+ this.myGraph.getNode(currEdge.getDest()).getWeight());
+						this.myGraph.getNode(currEdge.getDest()).setInfo(""+currNode.getKey());
+					}
+					if ((this.myGraph.getNode(currEdge.getDest())).getTag()==0)
+						queueNode.add(this.myGraph.getNode(currEdge.getDest()));
+				}
 			}
+			node_data minNode= new NodeData();
+			minNode=null;
+			node_data temp=new NodeData();
+			min=Double.MAX_VALUE;
+			//			currNode.setTag(1);
+			//			queueNode.remove();
+			System.out.println("Queue is empty?  "+!queueNode.isEmpty());
+
+			while (!queueNode.isEmpty()) 
+			{
+				temp=queueNode.remove();;
+				System.out.println("temp:   "+temp.getKey());
+				System.out.print("i am minimum:  "+min+"   ");
+				//System.out.print("now the first in queue is:   "+queueNode.peek().getKey()+ "  and my w is:  ");
+				double t= temp.getWeight();
+				System.out.println("my weight" +t);
+				if (temp.getKey()!=currNode.getKey())
+				{
+					if (t<min)
+					{
+						min=t;
+						minNode=this.myGraph.getNode(temp.getKey());
+						System.out.println("min node key is:   "+minNode.getKey()+"  and w=:  "+minNode.getWeight());
+					}
+				}
+
 			}
+
+			//System.out.println("The Min Key:   "+minNode.getKey()+"  and w=:  "+minNode.getWeight());
+			System.out.println("crunNode is:   "+currNode.getKey());
+			currNode.setTag(1);
+			System.out.println("crunNode Tag is:   "+currNode.getTag());
+			if (minNode!=null)
+			{
+				currNode=minNode;
+				queueNode.add(currNode);
+			}
+
+			System.out.println("now crunNode is:   "+currNode.getKey());
+			count++;
 		}
-
-		String infoDest =this.myGraph.HashMapNode.get(dest).getInfo()+","+destN.getKey();
-		System.out.println("infoDestttttttttttttttttttttttttt:  "+infoDest);
-		int len=infoDest.length()/2; 
-		String[] arr=new String [len];
-
-		arr=infoDest.split(",");
-		for (int i=0; i<arr.length; i++)
+		System.out.println("finish all the nodes");
+		if (!destN.getInfo().equals(""))
 		{
-			//System.out.println("arr[i]"+ arr[2]);
-			lNd.add(this.myGraph.HashMapNode.get(Integer.parseInt(arr[i])));
+		currNode=this.myGraph.getNode(dest);
+		shortestPathList.add(currNode);
+		}
+		System.out.println("The currnt node thet add to the list:    "+currNode.getKey());
+		while(currNode.getKey()!=src)
+		{
+			shortestPathList.add(this.myGraph.getNode(Integer.parseInt(currNode.getInfo())));
+			System.out.println("the currnt node thet add to the list:    "+currNode.getInfo());
+			currNode=this.myGraph.getNode(Integer.parseInt(currNode.getInfo()));
+			System.out.println("size list:    "+shortestPathList.size());
+		}
+		System.out.println("print from shortestpath:  ");
+
+		if (shortestPathList.size()==1 )
+		{
+			System.out.println("list nullllll");
+			shortestPathList=null;
+			return null;
 		}
 
-		return lNd;
+		Iterator<node_data> itList = shortestPathList.iterator(); 
+		System.out.println("Print the list");
+
+		while (itList.hasNext()) 
+		{
+			node_data c = (node_data)itList.next();
+			System.out.print(c.getKey() + " " );
+		}
+
+		return swapListNode(shortestPathList);
+
 	}
+	private List<node_data> swapListNode(List<node_data> l)
+	{
+		List<node_data> newList=new LinkedList<node_data>();
+
+		for (int i=l.size()-1; i>=0; i--)
+		{
+			newList.add(l.get(i));
+		}
+		System.out.println("print from swapListNode:  ");
+		Iterator<node_data> itList = newList.iterator(); 
+		while (itList.hasNext()) 
+		{
+			node_data c = (node_data)itList.next();
+			System.out.print(c.getKey() + " " );
+		}
+		return newList;
+	}
+	//	public List<node_data> shortestPath11(int src, int dest) 
+	//	{
+	//		infinityNodeW();
+	//		Queue<node_data> qn = new LinkedList<node_data>();
+	//
+	//		List<node_data> shortestPath=new LinkedList<node_data>();
+	//		node_data srcN = this.myGraph.HashMapNode.get(src);
+	//		node_data destN = this.myGraph.HashMapNode.get(dest);
+	//		srcN.setWeight(0);
+	//		srcN.setInfo("");
+	//		qn.add(srcN);
+	//		node_data currNode=this.myGraph.getNode(src);
+	//		while (!qn.isEmpty()) 
+	//		{
+	//			Iterator<edge_data> itEdge = this.myGraph.getE(currNode.getKey()).iterator(); 
+	//			while (itEdge.hasNext()) 
+	//			{
+	//				edge_data currEdge = (edge_data) itEdge.next();
+	//				if (currNode.getWeight()+currEdge.getWeight() < this.myGraph.getNode(currEdge.getDest()).getWeight() )
+	//				{
+	//					this.myGraph.getNode(currEdge.getDest()).setWeight(currNode.getWeight()+currEdge.getWeight());
+	//					System.out.println("Update weight: "+this.myGraph.getNode(currEdge.getDest()).getWeight());
+	//					//					if (currNode.getKey()==src)
+	//					this.myGraph.getNode(currEdge.getDest()).setInfo(""+currNode.getKey());
+	//					//					else
+	//					//						this.myGraph.getNode(currEdge.getDest()).setInfo(currNode.getInfo()+","+  Integer.toString(currNode.getKey()));
+	//					System.out.println("I am node:  "+currNode.getKey() );
+	//					//System.out.println("info dest of"+this.myGraph.getNode(currEdge.getDest()).getKey()+"is: " +this.myGraph.getNode(currEdge.getDest()).getInfo() );
+	//					qn.add( this.myGraph.getNode(currEdge.getDest()));
+	//				}
+	//			}	
+	//
+	//			while ( !qn.isEmpty() && (qn.peek().getKey() == dest ))
+	//			{
+	//				qn.remove();
+	//				if (!qn.isEmpty())
+	//				{	
+	//					currNode=qn.peek();
+	//				}
+	//
+	//			}
+	//
+	//			if (!qn.isEmpty())
+	//			{	
+	//				qn.remove();
+	//
+	//				if (!qn.isEmpty())
+	//				{	
+	//					currNode=qn.peek();
+	//				}
+	//			}
+	//		}
+	//		System.out.println("destN weight:     "+destN.getWeight());
+	//		String infoDest =this.myGraph.HashMapNode.get(dest).getInfo()+","+destN.getKey();
+	//		int len=infoDest.length()/2; 
+	//		String[] arr=new String [len];
+	//
+	//		arr=infoDest.split(",");
+	//		for (int i=0; i<arr.length; i++)
+	//		{
+	//			shortestPath.add(this.myGraph.HashMapNode.get(Integer.parseInt(arr[i])));
+	//		}
+	//
+	//		return shortestPath;
+	//	}
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) 
 	{
 		LinkedList <node_data> listAns = new LinkedList<node_data>();
-		
+
 		if (!isConnected()) 
 		{
 			System.out.println("im not connect -end TSP");
@@ -338,7 +476,7 @@ public class Graph_Algo implements graph_algorithms
 				System.out.println("targets.get(numList):  "+targets.get(numList));
 				System.out.println("targets.get(numList+1):  "+targets.get(numList+1));
 				listAns.addAll(shortestPath(targets.get(numList), targets.get(numList+1)));
-				
+
 				if (numList!=0) 
 				{
 					listAns.remove(numList);
@@ -346,7 +484,7 @@ public class Graph_Algo implements graph_algorithms
 				numList++;
 				System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
 			}
-			
+
 			numList=0;
 			while(numList<targets.size()-1)// remove douplicat
 			{
@@ -483,10 +621,43 @@ public class Graph_Algo implements graph_algorithms
 
 	public static void main(String[] args) 
 	{
-
-
+		//// working on short
+		//		DGraph DG1 = new DGraph();
+		//		Graph_Algo g1 = new Graph_Algo();
+		//		NodeData b1 = new NodeData(1,new Point3D (100,200,3),0);
+		//		NodeData b2 = new NodeData(2,new Point3D (150,200,3),0);
+		//		NodeData b3 = new NodeData( 3,new Point3D (300,450,3),0);
+		//		NodeData b4 = new NodeData(4,new Point3D (450,500,3),0);
+		//		NodeData b5 = new NodeData(5,new Point3D (320,600,3),0);
+		//		NodeData b6 = new NodeData(6,new Point3D (226,260,3),0);
+		//		DG1.addNode(b1);
+		//		DG1.addNode(b2);
+		//		DG1.addNode(b3);
+		//		DG1.addNode(b4);
+		//		DG1.addNode(b5);
+		//		DG1.addNode(b6);
+		//		DG1.connect(1,2,1);
+		//		DG1.connect(2,3,2);
+		//		DG1.connect(3,4,3);
+		//		DG1.connect(4,5,4);
+		//		DG1.connect(5,6,5);
+		//		DG1.connect(1,6,16);
+		//		g1.init(DG1);
+		//		boolean flag = 15 == g1.shortestPathDist(1,6);
+		//		List<node_data> lNd=g1.shortestPath(1, 6);
+		//		if (lNd.isEmpty())
+		//			System.out.println("the list from shourt path is EMPTY");
+		//		System.out.println("print from the main:  ");
+		//		Iterator<node_data> itList = lNd.iterator(); 
+		//		while (itList.hasNext()) 
+		//		{
+		//			node_data c = (node_data)itList.next();
+		//			System.out.print(c.getKey() + " " );
+		//		}
+		//		if (!flag)
+		//			System.out.println("dis not working");
+		//	
+		//////////////////////////////////////////////////////////////
 
 	}
-
-
 }

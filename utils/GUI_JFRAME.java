@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Menu;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.Graphics2D;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -120,6 +122,7 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 							node_data destNode = Dg.getNode(ed.getDest());
 					//		node_data destNode = getNodeDest(ed.getDest());
 							Point3D pDest= new Point3D((int)destNode.getLocation().x(), (int)destNode.getLocation().y());
+							((Graphics2D) dg).setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 							(dg).drawLine(pSrc.ix(), pSrc.iy(),pDest.ix(), pDest.iy());
 							//write the w edge
 							String wString = "";
