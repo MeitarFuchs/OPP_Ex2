@@ -53,6 +53,7 @@ public class NodeData implements node_data {
 
 	public NodeData(node_data nd) 
 	{
+		System.out.println("nd key:   "+nd.getKey());
 	this.Key=nd.getKey(); 
 		this.Location=nd.getLocation();
 		this.Weight=nd.getWeight();

@@ -247,16 +247,18 @@ public class Graph_Algo implements graph_algorithms
 	@Override
 	public List<node_data> shortestPath(int src, int dest) 
 	{
-		System.out.println("hello");
+
+
 		infinityNodeW();
 		initColor(0);
 		int count=0;
+
 		Queue<node_data> queueNode = new LinkedList<node_data>();
 		List<node_data> shortestPathList=new LinkedList<node_data>();
-		node_data srcN = this.myGraph.HashMapNode.get(src);
+		node_data srcN = new NodeData(this.myGraph.HashMapNode.get(src));
 		node_data destN = this.myGraph.HashMapNode.get(dest);
-		
-		System.out.println("srcN"+ this.myGraph.HashMapNode.get(src).getKey());
+		System.out.println("src:    "+src+"   dest:    "+dest);
+		System.out.println("srcN"+ srcN.getKey());
 		System.out.println("destN"+ this.myGraph.HashMapNode.get(dest).getKey());
 		if (this.myGraph.HashMapNode.get(src)==null ||  this.myGraph.HashMapNode.get(dest)==null)
 		{
@@ -350,32 +352,18 @@ public class Graph_Algo implements graph_algorithms
 			currNode=this.myGraph.getNode(dest);
 			shortestPathList.add(currNode);
 		}
-		System.out.println("The currnt node thet add to the list:    "+currNode.getKey());
+		System.out.println("The currnt node thet i want to add to the list:    "+currNode.getKey());
 		while(currNode.getKey()!=src)
 		{
-			shortestPathList.add(this.myGraph.getNode(Integer.parseInt(currNode.getInfo())));
-			System.out.println("the currnt node thet add to the list:    "+currNode.getInfo());
-			currNode=this.myGraph.getNode(Integer.parseInt(currNode.getInfo()));
-			System.out.println("size list:    "+shortestPathList.size());
+				shortestPathList.add(this.myGraph.getNode(Integer.parseInt(currNode.getInfo())));
+				currNode=this.myGraph.getNode(Integer.parseInt(currNode.getInfo()));
+			
 		}
-		System.out.println("print from shortestpath:  ");
 
 		if (shortestPathList.size()==1 )
 		{
-			System.out.println("list nullllll");
 			shortestPathList=null;
-			System.out.println("null-2");
-
 			return null;
-		}
-
-		Iterator<node_data> itList = shortestPathList.iterator(); 
-		System.out.println("Print the list");
-
-		while (itList.hasNext()) 
-		{
-			node_data c = (node_data)itList.next();
-			System.out.print(c.getKey() + " " );
 		}
 
 		return swapListNode(shortestPathList);
@@ -470,12 +458,11 @@ public class Graph_Algo implements graph_algorithms
 	public List<node_data> TSP(List<Integer> targets) 
 	{
 		LinkedList <node_data> listAns = new LinkedList<node_data>();
-
-		if (!isConnected()) 
-		{
-			System.out.println("im not connect -end TSP");
-			return null;
-		}
+		LinkedList <node_data> tempList = new LinkedList<node_data>();
+				if (!isConnected()) 
+				{
+					return TSPnotConnect(targets);
+				}
 		if (targets.size()==1)
 		{
 			listAns.add(this.myGraph.HashMapNode.get(targets.get(0)));
@@ -485,9 +472,14 @@ public class Graph_Algo implements graph_algorithms
 			int numList=0;
 			while(numList<targets.size()-1)
 			{
+				tempList=null;
 				System.out.println("targets.get(numList):  "+targets.get(numList));
 				System.out.println("targets.get(numList+1):  "+targets.get(numList+1));
-				listAns.addAll(shortestPath(targets.get(numList), targets.get(numList+1)));
+				tempList= (LinkedList<node_data>) shortestPath(targets.get(numList), targets.get(numList+1));
+				if (tempList.isEmpty())
+					return null;
+				else
+					listAns.addAll(tempList);
 
 				if (numList!=0) 
 				{
@@ -511,6 +503,15 @@ public class Graph_Algo implements graph_algorithms
 		if (!listAns.isEmpty())
 			System.out.println("bye TSP");
 		return listAns;
+	}
+	
+	
+	private List<node_data> TSPnotConnect(List<Integer> targets) 
+	{
+		
+
+     
+		return null;
 	}
 	//	{
 	//		List <node_data> listN = new LinkedList<node_data>();
@@ -648,8 +649,13 @@ public class Graph_Algo implements graph_algorithms
 		node_data node3 = new NodeData(3 ,p3 ,8);
 		node_data node4 = new NodeData(4 ,p4 ,8);
 
+		Dg.addNode(node0);
+		Dg.addNode(node1);
+		Dg.addNode(node2);
+		Dg.addNode(node3);
+		Dg.addNode(node4);
 
-		Dg.connect(node0.getKey(), node1.getKey(), 9);
+			Dg.connect(node0.getKey(), node1.getKey(), 9);
 		Dg.connect(node1.getKey(), node2.getKey(),3);
 		Dg.connect(node2.getKey(), node3.getKey(), 5);
 		Dg.connect(node3.getKey(), node0.getKey(), 4);
@@ -661,23 +667,42 @@ public class Graph_Algo implements graph_algorithms
 
 		Ag.init(Dg);
 
-		boolean t = Ag.isConnected();
-		if (!t)
-		{ 
-			fail(); 
-		}
+		//		boolean t = Ag.isConnected();
+		//		if (!t)
+		//		{ 
+		//			fail(); 
+		//		}
 
 		System.out.println("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 		List<node_data> lNd = Ag.shortestPath(0, 3);
 		Iterator<node_data> itList = lNd.iterator(); 
-				while (itList.hasNext()) 
-				{
-					node_data c = (node_data)itList.next();
-					System.out.print(c.getKey() + " " );
-				}
-		
+		while (itList.hasNext()) 
+		{
+			node_data c = (node_data)itList.next();
+			System.out.print(c.getKey() + " " );
+		}
+
+		LinkedList<Integer> l = new LinkedList<Integer>();
+		l.add(1);
+		l.add(3);
+		l.add(4);		
+
+		if (Ag.TSP(l).isEmpty())
+		{ 
+			fail(); 
+		}
+
+		l = new LinkedList<>();
+		l.add(1);
+		l.add(3);
+		l.add(0);
+		if (Ag.TSP(l).isEmpty())
+		{ 
+			fail(); 
+		}
 		System.out.println("ooooooooooooooooooooooooo");
-		//// working on short
+		
+//// working on shortPath
 		//		DGraph DG1 = new DGraph();
 		//		Graph_Algo g1 = new Graph_Algo();
 		//		NodeData b1 = new NodeData(1,new Point3D (100,200,3),0);
