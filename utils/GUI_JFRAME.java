@@ -2,6 +2,7 @@ package utils;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.FileDialog;
 import java.awt.Graphics;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -33,11 +34,18 @@ import dataStructure.node_data;
 public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 {
 	private graph Dg= new DGraph();
+	 private Graph_Algo Ag = new Graph_Algo();
+   
+    private int mc;
 
-	public GUI_JFRAME(graph Dgraph)
+	public GUI_JFRAME(graph graph)
 	{
-		this.Dg= new DGraph((DGraph) Dgraph);
-		initGUI(Dgraph);
+		if (graph==null)
+			throw new RuntimeException("the graph is null");
+		this.Dg= new DGraph((DGraph) graph);
+		 this.mc=this.Dg.getMC();
+		 this.Ag.init(this.Dg);
+		initGUI(graph);
 	}
 
 	private void initGUI(graph graph) 
@@ -49,30 +57,33 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		this.Dg=graph;
 		
 		MenuBar menuBar = new MenuBar();
+		
 		Menu file = new Menu("file");
 		menuBar.add(file);
 		this.setMenuBar(menuBar);
-
 		Menu graph_algo = new Menu("graph algo");
 		menuBar.add(graph_algo);
-
 
 		MenuItem item1 = new MenuItem("save to file");
 		item1.addActionListener(this);
 		MenuItem item2 = new MenuItem("load from file");
 		item2.addActionListener(this);
-		MenuItem item3 = new MenuItem("Is the graph Conncected?");
+		
+		MenuItem item3 = new MenuItem("Paint my Graph Algo");
 		item3.addActionListener(this);
-		MenuItem item4 = new MenuItem("shortest path");
+		MenuItem item4 = new MenuItem("Is the graph Conncected?");
 		item4.addActionListener(this);
-		MenuItem item5 = new MenuItem("tsp");
+		MenuItem item5 = new MenuItem("shortest path");
 		item5.addActionListener(this);
+		MenuItem item6 = new MenuItem("tsp");
+		item6.addActionListener(this);
 
 		file.add(item1);
 		file.add(item2);
 		graph_algo.add(item3);
 		graph_algo.add(item4);
 		graph_algo.add(item5);
+		graph_algo.add(item6);
 		
 		this.addMouseListener(this);
 	}
@@ -141,20 +152,48 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+			Graph_Algo AgNew=new Graph_Algo();
 			String str = e.getActionCommand();
-
+			JFileChooser choose;
+			
+			if(str.equals("Paint my Graph Algo"))
+			{
+				initGUI(this.Dg);				
+			}
+			
 			if(str.equals("save to file"))
 			{
-				Point3D p1 = new Point3D(100,100);
-				Point3D p2 = new Point3D(50,300);
-				Point3D p3 = new Point3D(400,150);
-
-//				points.add(p1);
-//				points.add(p2);
-//				points.add(p3);
-
-				repaint();
+				AgNew=new Graph_Algo();	
+				AgNew.init(this.Dg);
+				
+				choose= new JFileChooser(FileSystemView.getFileSystemView());
+				choose.setDialogTitle("Save graph to a file now..");
+				int userChoose = choose.showSaveDialog(null);
+				
+				if (userChoose == JFileChooser.APPROVE_OPTION) 
+				{
+					System.out.println("Saved as a file:   " + choose.getSelectedFile().getAbsolutePath());
+					AgNew.save(choose.getSelectedFile().getAbsolutePath());
+				}
 			}
+			if(str.equals("load from file"))
+			{
+				AgNew=new Graph_Algo();
+
+				choose= new JFileChooser(FileSystemView.getFileSystemView());
+				choose.setDialogTitle("Init a graph out FROM file now..."); 
+				int userChoose = choose.showOpenDialog(null);
+				
+				if(userChoose == JFileChooser.APPROVE_OPTION)
+				{
+					System.out.println("the file that choosen to open is:   " + choose.getSelectedFile().getName());
+					AgNew.init(choose.getSelectedFile().getAbsolutePath());
+					graph theNewGraph=AgNew.copy();
+					initGUI(theNewGraph);	
+				}
+			}
+		
+	   	       repaint();
 
 		}
 	
@@ -248,23 +287,6 @@ public class GUI_JFRAME extends JFrame implements ActionListener, MouseListener
 			Dgraph.connect(n7.getKey(),n2.getKey(),20);
 			GuiG.repaint();
 
-			//			graph g = new DGraph();
-			//			Point3D p=new Point3D(1,4,0);
-			//			Point3D p1=new Point3D(2,3,0);
-			//			Point3D p2=new Point3D(3,2,0);
-			//			Point3D p3=new Point3D(4,2,0);		
-			//			node_data ND = new NodeData (1,p,8,"hey",0);
-			//			node_data ND1 = new NodeData (2,p1,5,"hur",0);
-			//			//		node_data ND2 = new NodeData (3,p2,15,"hey",0);
-			//			//		node_data ND3 = new NodeData (4,p3,7,"hur",0);
-			//			//node_data ND2 = new NodeData (3,9);
-			//			((graph) g).addNode(ND);
-			//			( (graph) g).addNode(ND1);
-			//			//		((graph) g).addNode(ND2);
-			//			//		( (graph) g).addNode(ND3);
-			//			g.connect(ND.getKey(),ND1.getKey(),10.0);
-
-			//drawGraph((graph) g);
 		}
 
 	}

@@ -21,11 +21,7 @@ import dataStructure.graph;
 import dataStructure.node_data;
 import utils.Point3D;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,13 +37,17 @@ import java.lang.reflect.Array;
 public class Graph_Algo implements graph_algorithms
 {
 	private DGraph myGraph = new DGraph();
-	public graph getMyGraph(){
+	
+	
+	public graph getMyGraph()
+	{
 		return this.myGraph;
 	}
 	@Override
-	public void init(graph g) //???
+	public void init(graph g) 
 	{
 		this.myGraph=(DGraph) g;
+		
 	}
 
 	@Override
@@ -59,16 +59,13 @@ public class Graph_Algo implements graph_algorithms
 			ObjectInputStream in = new ObjectInputStream(file);
 
 			myGraph= (DGraph)in.readObject();
-
 			in.close();
 			file.close();
-
 			System.out.println("The Graph has been deserialized");
 		}
-
 		catch(ClassNotFoundException ex)
 		{
-			System.out.println("ClassNotFoundException is caught");
+			System.out.println("ClassNotFoundException is caught: we can't lode your graph");
 		}
 		catch(IOException ex)
 		{
@@ -87,7 +84,6 @@ public class Graph_Algo implements graph_algorithms
 			ObjectOutputStream out = new ObjectOutputStream(file); 
 
 			out.writeObject(myGraph); 
-
 			out.close(); 
 			file.close(); 
 
@@ -96,7 +92,7 @@ public class Graph_Algo implements graph_algorithms
 
 		catch(IOException ex) 
 		{ 
-			System.out.println("IOException is caught"); 
+			System.out.println("IOException is caught- we can't save your graph"); 
 		} 
 	} 
 	@Override
