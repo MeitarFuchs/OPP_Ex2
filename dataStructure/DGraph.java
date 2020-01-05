@@ -1,16 +1,15 @@
 package dataStructure;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-
-import utils.Point3D;
-
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
 
-public class DGraph implements graph{
+public class DGraph implements graph, Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public HashMap  <Integer, node_data> HashMapNode  = new HashMap<Integer, node_data>();
 	public HashMap  <Integer, HashMap<Integer, edge_data>> HashMapEdge  = new HashMap<Integer, HashMap<Integer, edge_data>>();
 	public  int MC;

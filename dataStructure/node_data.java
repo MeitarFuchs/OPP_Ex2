@@ -1,7 +1,5 @@
 package dataStructure;
 
-import java.util.HashMap;
-
 import utils.Point3D;
 /**
  * This interface represents the set of operations applicable on a 

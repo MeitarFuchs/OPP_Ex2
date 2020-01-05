@@ -1,20 +1,12 @@
 package algorithms;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 import java.util.Queue;
-import java.util.*;
-
-import com.sun.javafx.collections.IntegerArraySyncer;
-import com.sun.jmx.remote.internal.ArrayQueue;
 
 import dataStructure.DGraph;
-import dataStructure.EdgeData;
 import dataStructure.NodeData;
 import dataStructure.edge_data;
 import dataStructure.graph;
@@ -27,15 +19,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
+import java.io.Serializable;
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.
  * @author 
  *
  */
-public class Graph_Algo implements graph_algorithms
+public class Graph_Algo implements graph_algorithms, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DGraph myGraph = new DGraph();
 	
 	
@@ -144,13 +140,13 @@ public class Graph_Algo implements graph_algorithms
 
 		if (checkAllTag1())		
 		{
-			Iterator <node_data> itr = ( this.myGraph.getV()).iterator(); 
-			if (it.hasNext()) 
-			{
-				//System.out.println("hdbcbjvfbuscgdxkjbhvjsgaNAHSGDCJ");
-				node_data nd =  itr.next();
-				//System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
-			}
+//			Iterator <node_data> itr = ( this.myGraph.getV()).iterator(); 
+//			if (it.hasNext()) 
+//			{
+//				//System.out.println("hdbcbjvfbuscgdxkjbhvjsgaNAHSGDCJ");
+//				node_data nd =  itr.next();
+//				//System.out.println("tag node "+nd.getKey()+"is:   "+nd.getTag());
+//			}
 
 			return true;
 

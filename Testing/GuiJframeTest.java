@@ -1,9 +1,6 @@
 package Testing;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
 import dataStructure.DGraph;
 import dataStructure.NodeData;
 import dataStructure.graph;
@@ -14,7 +11,8 @@ import utils.Point3D;
 class GuiJframeTest {
 
 	@Test
-	void GUITest() {
+	void GUITest() 
+	{
 		//GUI_JFRAME GuiG = new GUI_JFRAME(Dg);
 		graph Dgraph = new DGraph();
 
@@ -57,23 +55,6 @@ class GuiJframeTest {
 		Dgraph.removeEdge(n5.getKey(), n3.getKey());
 		GuiG.repaint();
 
-		//			graph g = new DGraph();
-		//			Point3D p=new Point3D(1,4,0);
-		//			Point3D p1=new Point3D(2,3,0);
-		//			Point3D p2=new Point3D(3,2,0);
-		//			Point3D p3=new Point3D(4,2,0);		
-		//			node_data ND = new NodeData (1,p,8,"hey",0);
-		//			node_data ND1 = new NodeData (2,p1,5,"hur",0);
-		//			//		node_data ND2 = new NodeData (3,p2,15,"hey",0);
-		//			//		node_data ND3 = new NodeData (4,p3,7,"hur",0);
-		//			//node_data ND2 = new NodeData (3,9);
-		//			((graph) g).addNode(ND);
-		//			( (graph) g).addNode(ND1);
-		//			//		((graph) g).addNode(ND2);
-		//			//		( (graph) g).addNode(ND3);
-		//			g.connect(ND.getKey(),ND1.getKey(),10.0);
-
-		//drawGraph((graph) g);
 	}
 }
 

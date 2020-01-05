@@ -1,15 +1,12 @@
 package Testing;
 
 import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import dataStructure.graph;
 import dataStructure.NodeData;
 import dataStructure.node_data;
 import dataStructure.DGraph;
 import utils.Point3D;
-import java.util.HashMap;
 
 class DGraphTest {
 

@@ -1,9 +1,15 @@
 package dataStructure;
 
+import java.io.Serializable;
+
 import utils.Point3D;
 
-public class NodeData implements node_data {
+public class NodeData implements node_data,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int Key;
 	private Point3D Location;
 	private double Weight;
@@ -53,7 +59,6 @@ public class NodeData implements node_data {
 
 	public NodeData(node_data nd) 
 	{
-		System.out.println("nd key:   "+nd.getKey());
 	this.Key=nd.getKey(); 
 		this.Location=nd.getLocation();
 		this.Weight=nd.getWeight();
